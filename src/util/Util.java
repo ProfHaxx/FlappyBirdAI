@@ -1,4 +1,5 @@
-import java.util.HashMap;
+package util;
+
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
@@ -14,6 +15,12 @@ public class Util {
         }
 
         return iterator.next();
+    }
+
+    public static void sleep(long ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ignored){}
     }
 }
 

@@ -1,4 +1,6 @@
-public class innovationGeneration {
+package main;
+
+public class InnovationGeneration {
     private static int counterConnections = 0;
     private static int counterNodes = 0;
 

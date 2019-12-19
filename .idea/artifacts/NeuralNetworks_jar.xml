@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NeuralNetworks:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NeuralNetworks_jar</output-path>
+    <root id="archive" name="NeuralNetworks.jar">
+      <element id="module-output" name="Flappy Bird" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-test.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

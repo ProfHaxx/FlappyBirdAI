@@ -1,3 +1,5 @@
+package main;
+
 public class Counter {
     public int counter;
 

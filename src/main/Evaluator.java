@@ -1,3 +1,5 @@
+package main;
+
 import java.util.*;
 
 public abstract class Evaluator {
@@ -17,7 +19,6 @@ public abstract class Evaluator {
 
     private List<Genome> genomes;
     private List<Genome> nextGenGenomes;
-    private HashMap<Genome, Double> bestGenomsFromSpecies;
     Random random = new Random();
 
     private List<Species> species;
@@ -28,13 +29,12 @@ public abstract class Evaluator {
     private Genome fittestGenome;
 
     public Evaluator(int populationSize, Genome startingGenome){
-        genomes = new ArrayList<Genome>(populationSize);
+        genomes = new ArrayList<>(populationSize);
         nextGenGenomes = new ArrayList<>(populationSize);
-        species = new ArrayList<Species>();
-        mappedSpecies = new HashMap<Genome, Species>();
-        scoreMap = new HashMap<Genome, Double>();
+        species = new ArrayList<>();
+        mappedSpecies = new HashMap<>();
+        scoreMap = new HashMap<>();
         this.populationSize = populationSize;
-        bestGenomsFromSpecies = new HashMap<>();
 
         Species species1 = new Species(startingGenome);
         species.add(species1);
@@ -62,18 +62,18 @@ public abstract class Evaluator {
 
         // Place genomes into species
 
-        if (species.size() > Map.ammount * PercentageOfSpeiciesToEvalate){
+        if (species.size() > main.Map.amount * PercentageOfSpeiciesToEvalate){
             DT++;
         }
 
-        if (species.size() < Map.ammount * PercentageOfSpeiciesTooSmall){
+        if (species.size() < main.Map.amount * PercentageOfSpeiciesTooSmall){
             DT--;
         }
 
         for(Genome genome: genomes){
             boolean needsOwnSpecies = true;
             for(Species s: species) {
-                if (compatibilityDistance.count(genome, s.mascot) < DT){
+                if (CompatibilityDistance.count(genome, s.mascot) < DT){
                     needsOwnSpecies = false;
                     mappedSpecies.put(genome, s);
                     s.members.add(genome);
@@ -154,7 +154,7 @@ public abstract class Evaluator {
         }
 
         genomes = nextGenGenomes;
-        nextGenGenomes = new ArrayList<Genome>();
+        nextGenGenomes = new ArrayList<>();
     }
 
     public int getSpeciesAmount() {
@@ -163,10 +163,6 @@ public abstract class Evaluator {
 
     public double getHighestFitness() {
         return highestScore;
-    }
-
-    public Genome getFittestGenome() {
-        return fittestGenome;
     }
 
     public ArrayList<Genome> getGenomes(){
@@ -234,23 +230,17 @@ public abstract class Evaluator {
 
         public Species(Genome mascot) {
             this.mascot = mascot;
-            this.members = new LinkedList<Genome>();
+            this.members = new LinkedList<>();
             this.members.add(mascot);
-            this.fitnessPop = new ArrayList<FitnessGenome>();
+            this.fitnessPop = new ArrayList<>();
             fittestGenome =  new FitnessGenome(mascot, 0.0);
-        }
-
-        public void addAdjustedFitness(double adjustedFitness) {
-            this.totalAdjustedFitness += adjustedFitness;
         }
 
         public void changeFittestGenome( FitnessGenome newFittestGenome){
             fittestGenome = newFittestGenome;
         }
 
-        /*
-         *	 Selects new random mascot + clear members + set totaladjustedfitness to 0f
-         */
+
         public void reset(Random r) {
             int newMascotIndex = r.nextInt(members.size());
             this.mascot = members.get(newMascotIndex);

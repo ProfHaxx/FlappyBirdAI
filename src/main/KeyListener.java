@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -28,16 +30,16 @@ public class KeyListener extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_1:
-                key_situationV1[6] = 1;
+                key_situationV1[6] = 1; //Speed = 1
                 break;
             case KeyEvent.VK_2:
-                key_situationV1[7] = 1;
+                key_situationV1[7] = 1; //Speed = 2
                 break;
             case KeyEvent.VK_3:
-                key_situationV1[8] = 1;
+                key_situationV1[8] = 1; //Speed = 3
                 break;
             case KeyEvent.VK_4:
-                key_situationV1[9] = 1;
+                key_situationV1[9] = 1; //Speed = 4
                 break;
             default:
                 break;

@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -9,10 +11,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-
-
 public class GenomePrinter {
-
     public static void printGenome(Genome genome, String path) {
         Random r = new Random();
         HashMap<Integer, Point> nodeGenePositions = new HashMap<Integer, Point>();
@@ -27,32 +26,32 @@ public class GenomePrinter {
         g.fillRect(0, 0, imageSize, imageSize);
 
         g.setColor(Color.BLUE);
-        for (NodeGene gene : genome.getNodeGenes().values()) {
-            if (gene.getType() == NodeGene.TYPE.INPUT) {
-                float x = ((float)gene.getNodeId()/((float)countNodesByTYPE(genome, NodeGene.TYPE.INPUT)+1f)) * imageSize;
-                float y = imageSize-nodeSize/2;
+        for (Node gene : genome.getNodeGenes().values()) {
+            if (gene.getType() == Node.Type.INPUT) {
+                float x = ((float)gene.getId()/((float)countNodesByTYPE(genome, Node.Type.INPUT)+1f)) * imageSize;
+                float y = imageSize-nodeSize/2.0f;
                 g.fillOval((int)(x-nodeSize/2), (int)(y-nodeSize/2), nodeSize, nodeSize);
-                nodeGenePositions.put(gene.getNodeId(), new Point((int)x,(int)y));
-            } else if (gene.getType() == NodeGene.TYPE.HIDDEN) {
+                nodeGenePositions.put(gene.getId(), new Point((int)x,(int)y));
+            } else if (gene.getType() == Node.Type.HIDDEN) {
                 int x = r.nextInt(imageSize-nodeSize*2)+nodeSize;
                 int y = r.nextInt(imageSize-nodeSize*3)+(int)(nodeSize*1.5f);
-                g.fillOval((int)(x-nodeSize/2), (int)(y-nodeSize/2), nodeSize, nodeSize);
-                nodeGenePositions.put(gene.getNodeId(), new Point((int)x,(int)y));
-            } else if (gene.getType() == NodeGene.TYPE.OUTPUT) {
+                g.fillOval((x-nodeSize/2), (y-nodeSize/2), nodeSize, nodeSize);
+                nodeGenePositions.put(gene.getId(), new Point(x, y));
+            } else if (gene.getType() == Node.Type.OUTPUT) {
                 int x = r.nextInt(imageSize-nodeSize*2)+nodeSize;
                 int y = nodeSize/2;
-                g.fillOval((int)(x-nodeSize/2), (int)(y-nodeSize/2), nodeSize, nodeSize);
-                nodeGenePositions.put(gene.getNodeId(), new Point((int)x,(int)y));
+                g.fillOval((x-nodeSize/2), (y-nodeSize/2), nodeSize, nodeSize);
+                nodeGenePositions.put(gene.getId(), new Point(x, y));
             }
         }
 
         g.setColor(Color.BLACK);
-        for (ConnectionGene gene : genome.getConnectionGenes().values()) {
-            if (!gene.isExpressed()) {
+        for (Connection gene : genome.getConnectionGenes().values()) {
+            if (!gene.isEnabled()) {
                 continue;
             }
-            Point inNode = nodeGenePositions.get(gene.getInNodeGeneId());
-            Point outNode = nodeGenePositions.get(gene.getOutNodeGeneId());
+            Point inNode = nodeGenePositions.get(gene.getInNodeId());
+            Point outNode = nodeGenePositions.get(gene.getOutNodeId());
 
             Point lineVector = new Point((int)((outNode.x - inNode.x) * 0.95f), (int)((outNode.y - inNode.y) * 0.95f));
 
@@ -62,11 +61,10 @@ public class GenomePrinter {
         }
 
         g.setColor(Color.WHITE);
-        for (NodeGene nodeGene : genome.getNodeGenes().values()) {
-            Point p = nodeGenePositions.get(nodeGene.getNodeId());
-            g.drawString(""+nodeGene.getNodeId(), p.x, p.y);
+        for (Node node : genome.getNodeGenes().values()) {
+            Point p = nodeGenePositions.get(node.getId());
+            g.drawString(""+ node.getId(), p.x, p.y);
         }
-
 
         try {
             ImageIO.write(image, "PNG", new File(path));
@@ -75,9 +73,9 @@ public class GenomePrinter {
         }
     }
 
-    private static int countNodesByTYPE(Genome genome, NodeGene.TYPE type) {
+    private static int countNodesByTYPE(Genome genome, Node.Type type) {
         int c = 0;
-        for (NodeGene node : genome.getNodeGenes().values()) {
+        for (Node node:genome.getNodeGenes().values()) {
             if (node.getType() == type) {
                 c++;
             }

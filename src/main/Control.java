@@ -1,25 +1,15 @@
+package main;
 
-
-class Control{
-    public  double pos;
-    public  double state;
-    public  boolean alive;
-    public  boolean isInThePipeOnce;
-    public  int isInThePipeOnceChecker;
-    public Counter counter;
-    public double lengthBetweenPipes;
-    public boolean Flap;
-
-
-
-
-
-    //-----------------------------------------//
-    private static double acceleration = 0.076;
-    private static final double gravity = 0.1;
-    //-----------------------------------------//
+public class Control{
+    private double pos;
+    public double state;
+    boolean alive;
+    private boolean isInThePipeOnce;
+    private int isInThePipeOnceChecker;
+    Counter counter;
+    double lengthBetweenPipes;
     
-    public Control(){
+    Control(){
         pos = Map.xPosOfTheBird;
         state = 0;
         alive = true;
@@ -30,24 +20,23 @@ class Control{
     }
 
 
-    public double ChangeAll(int jump, int number){
+    double changeAll(int jump, int number){
+        double acceleration = 0.076;
         if(jump == 1){
             state = acceleration * -28;
-
-        }
-        else{
+        } else {
             state += acceleration;
-            Flap = false;
         }
+
         pos += state * Math.abs(state);
         if(pos <= 0){
             pos = 0;
             alive = false;
-        }
-        else if(pos >= 385){
+        } else if(pos >= 385){
             pos = 385;
             alive = false;
         }
+
         if(checkPipes(number)){
             alive = false;
         }
@@ -55,13 +44,12 @@ class Control{
     }
 
     private  boolean checkPipes(int number){
-        boolean insedeAPapeGap = false;
+        boolean insidePipeGap = false;
         for(int i = 0; i < 3; i++){
             if((Pipes.Pipes[i][1] >= 57)&&(Pipes.Pipes[i][1] <= 107)){
                 if (!((Pipes.Pipes[i][0] < Map.yPosOfTheBird[number])&&(Pipes.Pipes[i][0] > Map.yPosOfTheBird[number] - 65))){
-                        insedeAPapeGap = true;
-                }
-                else{
+                        insidePipeGap = true;
+                } else {
                     if (isInThePipeOnce){
                         counter.add();
                         lengthBetweenPipes += Math.abs( Pipes.Pipes[i][0] - Map.yPosOfTheBird[number] - 32);
@@ -69,15 +57,14 @@ class Control{
                         isInThePipeOnceChecker = i;
                     }
                 }
-            }
-            else if (isInThePipeOnceChecker == i){
+            } else if (isInThePipeOnceChecker == i){
                 isInThePipeOnce = true;
             }
         }
-        return insedeAPapeGap;
+        return insidePipeGap;
     }
 
-    public  void setNew(){
+    void setNew(){
         lengthBetweenPipes = 0;
         pos = Map.xPosOfTheBird;
         state = 0;
